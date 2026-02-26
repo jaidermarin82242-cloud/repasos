@@ -1,0 +1,100 @@
+class Cancion:
+    def __init__(self, nombre, duracion):
+        self.nombre = nombre
+        self.duracion = duracion
+
+
+class Reproductor:
+    def __init__(self):
+        self.lista = [] # guarda las canciones
+        self.indice = 0  # posicion de la cancion en la que suena
+
+    def esta_vacia(self):
+        return len(self.lista) == 0
+
+#Funciones del reproductor:
+#Añadir cancion:
+
+    def agregar_cancion(self, nombre, duracion):
+        cancion = Cancion(nombre, duracion)
+        self.lista.append(cancion)
+
+    def reproducir(self):
+        if not self.lista:
+            print("No hay canciones")
+            return
+        actual = self.lista[self.indice]
+        print (f"Reproduciendo: {actual.nombre} ({actual.duracion}min)") ##
+
+    def siguiente(self):
+        if self.indice < len(self.lista) - 1: #ultimo indice que es el valido
+            self.indice += 1
+        else:
+            print("Ya estas en la ultima cancion ")
+
+        self.reproducir()
+
+    def anterior(self):
+        if self.indice > 0:
+            self.indice -= 1
+        else:
+             print("Devolviendo hacia la anterior cancion")
+
+        self.reproducir()
+
+
+    def mostrar(self):
+        if self.esta_vacia():
+            print("Lista vacía.")
+            return
+
+        print("\n--- Lista de canciones ---")
+        for i, cancion in enumerate(self.lista):
+            marca = " -> " if i == self.indice else " . "
+            print(f"{marca} {i + 1}. {cancion.nombre} ({cancion.duracion} min)")
+
+reproductor = Reproductor()
+
+def menu(rep):
+    print("\n--- MENÚ REPRODUCTOR ---") 
+    print("1. Agregar canción")
+    print("2. Reproducir canción actual")
+    print("3. Siguiente canción")
+    print("4. Canción anterior")
+    print("5. Mostrar lista de canciones")
+    print("6. Salir")
+
+    opcion = input("Seleccione una opción: ")
+
+    if opcion == "1":
+        nombre = input("Nombre de la canción: ")
+        duracion = input("Duración (min): ")
+        rep.agregar_cancion(nombre, duracion)
+        return menu(rep)
+
+    elif opcion == "2":
+        rep.reproducir()
+        return menu(rep)
+
+    elif opcion == "3":
+        rep.siguiente()
+        return menu(rep)
+
+    elif opcion == "4":
+        rep.anterior()
+        return menu(rep)
+
+    elif opcion == "5":
+        rep.mostrar()
+        return menu(rep)
+
+    elif opcion == "6":
+        print("Saliendo del reproductor...")
+        return
+
+    else:
+        print("Opción inválida")#
+        return menu(rep)
+
+# Inicio recursivo del menú
+menu(reproductor)
