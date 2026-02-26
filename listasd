@@ -1,0 +1,232 @@
+#Lista doblemente ligada
+# Lista doblemente ligada
+
+class Nodo:
+    def __init__(self, dato):
+        self.dato = dato
+        self.anterior = None
+        self.siguiente = None
+
+
+class ListaDoble:
+    def __init__(self):
+        self.cabeza = None
+        self.cola = None
+
+    def esta_vacia(self):
+        return self.cabeza is None
+
+    # Insertar al inicio
+    def insertar_inicio(self, dato):
+        nuevo = Nodo(dato)
+
+        if self.esta_vacia():
+            self.cabeza = nuevo
+            self.cola = nuevo
+        else:
+            nuevo.siguiente = self.cabeza
+            self.cabeza.anterior = nuevo
+            self.cabeza = nuevo
+
+    # Insertar al final
+    def insertar_final(self, dato):
+        nuevo = Nodo(dato)
+
+        if self.esta_vacia():
+            self.cabeza = nuevo
+            self.cola = nuevo
+        else:
+            self.cola.siguiente = nuevo
+            nuevo.anterior = self.cola
+            self.cola = nuevo
+
+    # Eliminar al inicio
+    def eliminar_inicio(self):
+        if self.esta_vacia():
+            return None
+
+        if self.cabeza == self.cola:
+            self.cabeza = None
+            self.cola = None
+        else:
+            self.cabeza = self.cabeza.siguiente
+            self.cabeza.anterior = None
+
+    # Eliminar al final
+    def eliminar_final(self):
+        if self.esta_vacia():
+            return None
+
+        if self.cabeza == self.cola:
+            self.cabeza = None
+            self.cola = None
+        else:
+            self.cola = self.cola.anterior
+            self.cola.siguiente = None
+
+    # Recorrer hacia adelante
+    def recorrer_adelante(self):
+        if self.esta_vacia():
+            print("Lista vacía")
+            return
+
+        actual = self.cabeza
+        print("Inicio -> ", end="")
+        while actual:
+            print(actual.dato, end=" <=> ")
+            actual = actual.siguiente
+        print("FIN")
+
+    # Recorrer hacia atrás
+    def recorrer_atras(self):
+        if self.esta_vacia():
+            print("Lista vacía")
+            return
+
+        actual = self.cola
+        print("Fin -> ", end="")
+        while actual:
+            print(actual.dato, end=" <=> ")
+            actual = actual.anterior
+        print("INICIO")
+
+    # Buscar un dato
+    def buscar(self, dato):
+        actual = self.cabeza
+        while actual:
+            if actual.dato == dato:
+                return True
+            actual = actual.siguiente
+        return False
+
+    # Longitud de la lista
+    def __len__(self):
+        contador = 0
+        actual = self.cabeza
+        while actual:
+            contador += 1
+            actual = actual.siguiente
+        return contador
+
+    # Imprimir la lista
+    def __str__(self):
+        if self.esta_vacia():
+            return "Lista vacía"
+
+        elementos = []
+        actual = self.cabeza
+        while actual:
+            elementos.append(str(actual.dato))
+            actual = actual.siguiente
+
+        return " <=> ".join(elementos)
+
+
+lista = ListaDoble()
+lista.insertar_final(10)
+lista.insertar_final(20)
+lista.insertar_final(30)
+
+print(lista)
+
+lista.insertar_inicio(40)
+print(lista)
+
+lista.recorrer_adelante()
+lista.recorrer_atras()
+
+print(f"Tamaño de la lista: {len(lista)}")
+print(lista.buscar(40))
+#forma recursiva
+def sumar(self, nodo = None):
+    if nodo is None:
+        nodo = self.cabeza
+    if nodo.siguiente is None:
+       return 0
+    return sumar(nodo.siguiente) + nodo.dato
+#buscar de manera recursiva
+
+def buscar(self, nodo=None, dato=None, primera_llamada=True):
+
+    if primera_llamada:
+        nodo = self.cabeza
+    if nodo is None:
+        return False
+    if nodo.dato == dato:
+        return True
+    return self.buscar(nodo.siguiente,dato, False)#
+
+
+        
+
+#Sacar el ultimo digito de un numero --> %10 = 0
+
+def ult_digito(numero):
+    if numero < 10:
+        return numero
+    return (numero %10 )+ult_digito(numero//10)
+
+print(ult_digito(15033))
+
+
+#busqueda binaria
+
+def busqueda_binaria(lista,num,inicio,fin):
+    if inicio > fin:
+        return -1 
+
+#permutaciones
+
+def permutaciones(lista):
+    if len(lista) <= 1:
+        return lista
+
+    resultado = []
+
+    for i in range(len(lista)):
+
+        elemento = lista[i]
+
+        resto = lista[ :1] + lista[i+1:]
+
+        for perm in permutaciones(resto):
+            resultado.append([elemento]+ perm)
+
+    return resultado #
+
+
+    #Recursion en cola (Tail recursion)
+
+
+def fibonacci(n): #se llama dos veces
+    pass
+
+
+
+def fibonacci_tail(n, actual = 0,siguiente = 1): # Se llama solo una vez (n --> veces)
+    if n == 0:
+        return actual
+    return fibonacci_tail(n-1, siguiente, actual + siguiente)
+
+def suma_lista(lista, acumulado = 0):
+        if len(lista) == 0:
+            return acumulado
+        return  suma_lista(lista[1:], lista[0]+ acumulado)
+
+def potencia(base, exp, resultado = 1):
+    if exp == 0:
+        return resultado
+
+
+    return potencia( base,exp -1,resultado * base)
+    
+    
+
+
+
+
+
+
+
+
+    
