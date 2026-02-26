@@ -1,0 +1,114 @@
+QUIZ 1 – EXAMEN D
+Sistema de Biblioteca Digital (Lista Enlazada)
+📄 ENUNCIADO
+
+Una universidad necesita manejar libros en una lista enlazada ordenada por año (más reciente primero).
+
+REGLAS:
+
+No usar listas de Python
+
+Insertar ordenado por año DESCENDENTE
+
+Usar recursividad donde se indique
+
+REQUERIMIENTOS
+🔹 PUNTO 1 (1.0) – Diseño
+
+Clase Libro:
+
+titulo
+
+autor
+
+año
+
+prestado (bool)
+
+siguiente
+
+Clase Biblioteca:
+
+referencia al inicio
+
+🔹 PUNTO 2 (1.25) – Insertar ordenado por año (RECURSIVO)
+🔹 PUNTO 3 (0.75) – Contar libros prestados (RECURSIVO)
+🔹 PUNTO 4 (1.0) – Obtener libros de un autor (RECURSIVO)
+
+Debe retornar nueva lista.
+
+🔹 PUNTO 5 (1.0) – Eliminar libros anteriores a cierto año (RECURSIVO)
+
+Modificar lista original.
+
+✅ SOLUCIÓN – EXAMEN D
+# Clase Nodo
+class Libro:
+    def __init__(self, titulo, autor, año, prestado=False):
+        self.titulo = titulo
+        self.autor = autor
+        self.año = año
+        self.prestado = prestado
+        self.siguiente = None
+
+
+# Clase Lista
+class Biblioteca:
+    def __init__(self):
+        self.inicio = None
+
+    # PUNTO 2 - Insertar ordenado descendente (recursivo)
+    def agregar(self, titulo, autor, año, prestado=False):
+        nuevo = Libro(titulo, autor, año, prestado)
+
+        def recursivo(nodo):
+            if nodo is None or año > nodo.año:
+                nuevo.siguiente = nodo
+                return nuevo
+            nodo.siguiente = recursivo(nodo.siguiente)
+            return nodo
+
+        self.inicio = recursivo(self.inicio)
+
+    # PUNTO 3 - Contar prestados (recursivo)
+    def contar_prestados(self):
+        def recursivo(nodo):
+            if nodo is None:
+                return 0
+            suma = 1 if nodo.prestado else 0
+            return suma + recursivo(nodo.siguiente)
+
+        return recursivo(self.inicio)
+
+    # PUNTO 4 - Filtrar por autor (recursivo)
+    def libros_por_autor(self, autor):
+        nueva = Biblioteca()
+
+        def recursivo(nodo):
+            if nodo is None:
+                return
+            recursivo(nodo.siguiente)
+            if nodo.autor == autor:
+                nueva.agregar(nodo.titulo, nodo.autor, nodo.año, nodo.prestado)
+
+        recursivo(self.inicio)
+        return nueva
+
+    # PUNTO 5 - Eliminar libros antiguos (recursivo)
+    def eliminar_anteriores(self, año_limite):
+        def recursivo(nodo):
+            if nodo is None:
+                return None
+            if nodo.año < año_limite:
+                return recursivo(nodo.siguiente)
+            nodo.siguiente = recursivo(nodo.siguiente)
+            return nodo
+
+        self.inicio = recursivo(self.inicio)
+
+    def mostrar(self):
+        actual = self.inicio
+        while actual:
+            estado = "Prestado" if actual.prestado else "Disponible"
+            print(f"{actual.titulo} ({actual.año}) - {estado}")
+            actual = actual.siguiente
