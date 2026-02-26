@@ -1,0 +1,110 @@
+QUIZ 1 – EXAMEN C
+Sistema de Playlist Musical (Lista Enlazada)
+📄 ENUNCIADO
+
+Spotify necesita una estructura para manejar una playlist usando listas enlazadas simples.
+
+REGLAS:
+
+No usar listas de Python []
+
+Usar lista enlazada simple
+
+Usar recursividad donde se indique
+
+Las canciones nuevas se agregan al FINAL
+
+REQUERIMIENTOS
+🔹 PUNTO 1 (1.0) – Diseño
+
+Clase Cancion:
+
+nombre
+
+artista
+
+duracion (segundos)
+
+siguiente
+
+Clase Playlist:
+
+referencia al inicio
+
+🔹 PUNTO 2 (1.0) – Agregar canción al FINAL (RECURSIVO)
+🔹 PUNTO 3 (1.0) – Duración total (RECURSIVO)
+🔹 PUNTO 4 (1.0) – Filtrar por artista (RECURSIVO)
+
+Debe retornar nueva playlist.
+
+🔹 PUNTO 5 (1.25) – Eliminar canciones menores a X segundos (RECURSIVO)
+
+Modificar lista original.
+
+✅ SOLUCIÓN – EXAMEN C
+# Clase Nodo
+class Cancion:
+    def __init__(self, nombre, artista, duracion):
+        self.nombre = nombre
+        self.artista = artista
+        self.duracion = duracion
+        self.siguiente = None
+
+
+# Clase Lista
+class Playlist:
+    def __init__(self):
+        self.inicio = None
+
+    # PUNTO 2 - Agregar al final (recursivo)
+    def agregar(self, nombre, artista, duracion):
+        nueva = Cancion(nombre, artista, duracion)
+
+        def recursivo(nodo):
+            if nodo is None:
+                return nueva
+            nodo.siguiente = recursivo(nodo.siguiente)
+            return nodo
+
+        self.inicio = recursivo(self.inicio)
+
+    # PUNTO 3 - Duración total (recursivo)
+    def duracion_total(self):
+        def recursivo(nodo):
+            if nodo is None:
+                return 0
+            return nodo.duracion + recursivo(nodo.siguiente)
+
+        return recursivo(self.inicio)
+
+    # PUNTO 4 - Filtrar por artista (recursivo)
+    def filtrar_por_artista(self, artista):
+        nueva = Playlist()
+
+        def recursivo(nodo):
+            if nodo is None:
+                return
+            recursivo(nodo.siguiente)
+            if nodo.artista == artista:
+                nueva.agregar(nodo.nombre, nodo.artista, nodo.duracion)
+
+        recursivo(self.inicio)
+        return nueva
+
+    # PUNTO 5 - Eliminar canciones cortas (recursivo)
+    def eliminar_cortas(self, x):
+        def recursivo(nodo):
+            if nodo is None:
+                return None
+            if nodo.duracion < x:
+                return recursivo(nodo.siguiente)
+            nodo.siguiente = recursivo(nodo.siguiente)
+            return nodo
+
+        self.inicio = recursivo(self.inicio)
+
+    def mostrar(self):
+        actual = self.inicio
+        while actual:
+            print(f"{actual.nombre} - {actual.artista} ({actual.duracion} seg)")
+            actual = actual.siguiente
