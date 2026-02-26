@@ -1,0 +1,101 @@
+def fibonacci(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    return fibonacci(n-1) + fibonacci(n-2)
+Uso:
+print(fibonacci(6))  # 8
+
+Así lo preguntan mucho cuando quieren evaluar recursividad.
+
+ Ejemplo 2 — Fibonacci Iterativo (más eficiente)
+def fibonacci(n):
+    if n == 0:
+        return 0
+    a = 0
+    b = 1
+    for _ in range(1, n):
+        a, b = b, a + b
+    return b
+
+
+ Ejemplo 3 — Imprimir los primeros N números
+def fibonacci_lista(n):
+    resultado = []
+    a, b = 0, 1
+    for _ in range(n):
+        resultado.append(a)
+        a, b = b, a + b
+    return resultado
+Uso:
+print(fibonacci_lista(10))
+
+Salida:
+
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+ Ejemplo 4 — Fibonacci con Memoización (nivel más alto)
+def fibonacci(n, memo={}):
+    if n in memo:
+        return memo[n]
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    memo[n] = fibonacci(n-1, memo) + fibonacci(n-2, memo)
+    return memo[n]
+
+✔ Mucho más eficiente
+✔ Sigue siendo recursivo
+
+Ejemplo 5 — Fibonacci usando recursividad en lista enlazada (nivel estructuras)
+
+Si te lo mezclan con estructuras de datos, podrían pedir:
+
+Insertar los primeros N Fibonacci en una lista enlazada
+
+Ejemplo conceptual:
+
+class Nodo:
+    def __init__(self, valor):
+        self.valor = valor
+        self.siguiente = None
+
+class Lista:
+    def __init__(self):
+        self.inicio = None
+
+    def agregar(self, valor):
+        nuevo = Nodo(valor)
+        nuevo.siguiente = self.inicio
+        self.inicio = nuevo
+
+Luego generar Fibonacci y agregarlos.
+
+Ejemplos típicos de pregunta en examen
+
+“Implemente Fibonacci usando recursividad.”
+
+“Calcule el término n-ésimo.”
+
+“Imprima los primeros N términos.”
+
+“Optimice Fibonacci.”
+
+“¿Cuál es la complejidad del Fibonacci recursivo?”
+Respuesta: O(2ⁿ)
+
+
+Si te preguntan:
+
+fibonacci(5)
+
+Debes saber que:
+
+f(5) = 5
+
+Porque:
+
+0 1 1 2 3 5
+        ↑
+      índice 5
