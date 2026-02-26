@@ -1,0 +1,40 @@
+#Generar un codigo que genere la cantidad adecuada que se suma al tener una cadena de numeros, por ejemplo: [1, 5, 10, 25], la cantidad adecuada es 30
+#la cantidad que se necesita para dar 30, tienes que poner el 5 y el 25 dentro de la cadena, depende de las modificaciones mediante la memoizacion
+
+def encontrar_combinacion(numeros, cantidad, memo=None):
+    # Inicializar memo en la primera llamada
+    if memo is None:
+        memo = {}
+    
+    # Si ya calculamos este valor, lo devolvemos del memo
+    if cantidad in memo:
+        return memo[cantidad]
+    
+    if cantidad == 0:
+        return 0
+    if cantidad < 0:
+        return float('inf')
+    
+    # Probar cada numero en la lista
+    minimo = float('inf')
+    for numero in numeros:
+        resultado = encontrar_combinacion(numeros, cantidad - numero, memo)
+        if resultado != float('inf'):
+            minimo = min(minimo, resultado + 1)
+    
+    # Guardamos el resultado en memo antes de retornar, porque lo vamos a necesitar para futuras llamadas
+    memo[cantidad] = minimo
+    return minimo
+
+#Ejemplo de uso
+numeros = [1, 5, 10, 25]
+cantidad = 30
+resultado = encontrar_combinacion(numeros, cantidad)
+if resultado == float('inf'):
+    print("No se puede formar la cantidad con los números dados.")
+else:
+    print(f"Se necesitan {resultado} monedas para formar {cantidad}")
+    
+# Puedes llamarlo nuevamente sin problemas, cada llamada tendrá su propio memo
+resultado2 = encontrar_combinacion([1, 5, 10], 20)
+print(f"Segundo ejemplo: Se necesitan {resultado2} monedas para formar 20")  
