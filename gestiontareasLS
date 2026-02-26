@@ -1,0 +1,151 @@
+CONTEXTO
+
+Una empresa necesita un sistema para gestionar tareas de un proyecto usando una lista enlazada simple.
+
+Cada tarea tiene:
+
+nombre
+
+responsable
+
+prioridad (1–5)
+
+estado (pendiente o completada)
+
+⚠️ REGLAS
+
+❌ No usar listas de Python []
+
+✔ Usar lista enlazada simple
+
+✔ Usar recursividad donde se indique
+
+✔ Mantener tareas ORDENADAS por prioridad (mayor primero)
+
+REQUERIMIENTOS
+🔹 PUNTO 1 (1.0) – Diseño
+Clase Nodo Tarea
+
+Debe almacenar:
+
+nombre
+
+responsable
+
+prioridad
+
+completada (bool)
+
+siguiente
+
+Clase Lista Proyecto
+
+Debe mantener:
+
+referencia al inicio
+
+🔹 PUNTO 2 (1.25) – AGREGAR TAREA ORDENADA (RECURSIVO)
+
+Insertar tarea respetando orden descendente por prioridad.
+
+Ejemplo:
+
+5 → 4 → 3 → 2 → 1
+🔹 PUNTO 3 (0.75) – CONTAR TAREAS PENDIENTES DE CIERTA PRIORIDAD (RECURSIVO)
+
+Ejemplo:
+
+contar_pendientes(5)
+🔹 PUNTO 4 (1.0) – OBTENER TAREAS DE UN RESPONSABLE (RECURSIVO)
+
+Debe retornar una NUEVA lista con las tareas de ese responsable.
+
+No modificar la lista original.
+
+🔹 PUNTO 5 (1.0) – ELIMINAR TAREAS COMPLETADAS (RECURSIVO)
+
+Modificar la lista original.
+
+✅ SOLUCIÓN COMPLETA
+# PUNTO 1 - Clase Nodo
+class Tarea:
+    def __init__(self, nombre, responsable, prioridad, completada=False):
+        self.nombre = nombre
+        self.responsable = responsable
+        self.prioridad = prioridad
+        self.completada = completada
+        self.siguiente = None
+
+
+# Clase Lista
+class Proyecto:
+    def __init__(self):
+        self.inicio = None
+
+    # PUNTO 2 - Agregar ordenado por prioridad (recursivo)
+    def agregar(self, nombre, responsable, prioridad):
+        nueva = Tarea(nombre, responsable, prioridad)
+
+        def recursivo(nodo):
+            if nodo is None or prioridad > nodo.prioridad:
+                nueva.siguiente = nodo
+                return nueva
+            nodo.siguiente = recursivo(nodo.siguiente)
+            return nodo
+
+        self.inicio = recursivo(self.inicio)
+
+    # PUNTO 3 - Contar pendientes por prioridad (recursivo)
+    def contar_pendientes(self, prioridad):
+        def recursivo(nodo):
+            if nodo is None:
+                return 0
+            cuenta = 0
+            if nodo.prioridad == prioridad and not nodo.completada:
+                cuenta = 1
+            return cuenta + recursivo(nodo.siguiente)
+
+        return recursivo(self.inicio)
+
+    # PUNTO 4 - Obtener tareas de un responsable (recursivo)
+    def tareas_de_responsable(self, responsable):
+        nueva = Proyecto()
+
+        def recursivo(nodo):
+            if nodo is None:
+                return
+            recursivo(nodo.siguiente)
+            if nodo.responsable == responsable:
+                nueva.agregar(nodo.nombre, nodo.responsable, nodo.prioridad)
+
+        recursivo(self.inicio)
+        return nueva
+
+    # PUNTO 5 - Eliminar completadas (recursivo)
+    def eliminar_completadas(self):
+        def recursivo(nodo):
+            if nodo is None:
+                return None
+            if nodo.completada:
+                return recursivo(nodo.siguiente)
+            nodo.siguiente = recursivo(nodo.siguiente)
+            return nodo
+
+        self.inicio = recursivo(self.inicio)
+
+    # Método auxiliar
+    def completar(self, nombre):
+        actual = self.inicio
+        while actual:
+            if actual.nombre == nombre:
+                actual.completada = True
+                return True
+            actual = actual.siguiente
+        return False
+
+    def mostrar(self):
+        actual = self.inicio
+        while actual:
+            estado = "✓" if actual.completada else "○"
+            print(f"[{estado}] {actual.nombre} - {actual.responsable} (Prioridad {actual.prioridad})")
+            actual = actual.siguiente
