@@ -1,0 +1,49 @@
+# 1. Factorial
+def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+# 2. Fibonacci
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# 3. Suma de números
+def suma_numeros(n):
+    if n == 0:
+        return 0
+    return n + suma_numeros(n - 1)
+
+# 4. Búsqueda binaria
+def busqueda_binaria(lista, objetivo, izq, der):
+    if izq > der:
+        return -1
+    mid = (izq + der) // 2
+    if lista[mid] == objetivo:
+        return mid
+    elif lista[mid] > objetivo:
+        return busqueda_binaria(lista, objetivo, izq, mid - 1)
+    else:
+        return busqueda_binaria(lista, objetivo, mid + 1, der)
+
+# 5. Recorrido de árbol binario
+def recorrer_arbol(nodo):
+    if nodo is None:
+        return
+    print(nodo.valor)
+    recorrer_arbol(nodo.izquierda)
+    recorrer_arbol(nodo.derecha)
+
+# 6. Potencia
+def potencia(base, exp):
+    if exp == 0:
+        return 1
+    return base * potencia(base, exp - 1)
+
+# 7. Inversión de cadena
+def invertir_cadena(s):
+    if len(s) == 0:
+        return s
+    return invertir_cadena(s[1:]) + s[0]
